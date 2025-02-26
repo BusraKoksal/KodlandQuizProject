@@ -4,13 +4,11 @@ import os
 
 app=Flask(__name__)
 
-if 'PYTHONANYWHERE' in os.environ:
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/busrakksl45/sinavflask/sinav.db'
-else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/busra/sinavflask/sinav.db'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sinav.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///C:/Users/busra/sinavflask/sinav.db'
 db=SQLAlchemy(app)
 
 class Question(db.Model):
