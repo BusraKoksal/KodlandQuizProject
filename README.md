@@ -22,13 +22,16 @@ Bu proje, **Kodland eğitmenlik başvurusu** kapsamında geliştirdiğim **Pytho
 ### 1. Projeyi bilgisayarınıza klonlayın:
 git clone https://github.com/BusraKoksal/KodlandQuizProject.git
 
-2. Gerekli paketleri yükleyin:
+2.Projeye girin:
+cd KodlandQuizProject
+
+3. Gerekli paketleri yükleyin:
 pip install -r requirements.txt
 
-3. Veritabanını oluşturun ve başlangıç verilerini yükleyin:
+4. Veritabanını oluşturun ve başlangıç verilerini yükleyin:
 python main.py
 
-4. Flask uygulamanızı başlatın:
+5. Flask uygulamanızı başlatın:
 python main.py
 
 Uygulama, varsayılan olarak http://127.0.0.1:5000/ adresinde çalışacaktır.
