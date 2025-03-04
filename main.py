@@ -55,22 +55,27 @@ def index():
           
                 
 
-        user=User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
         if user:
-            if score > user.score:
-                user.previous_score = user.score
-                user.score=score
+            previous_score = user.score  # Mevcut skoru sakla (önceki skor)
+            user.score = max(user.score, score)  # Skoru güncelle
+            user.previous_score = previous_score  # Güncellenmiş önceki skoru ata
         else:
-                user=User(username=username,email=email, score=score)
-                db.session.add(user)
+            user = User(username=username, email=email, score=score, previous_score=0)
+            db.session.add(user)
+
+
                 
 
         
         
         db.session.commit()
 
-        high_score=User.query.order_by(User.score.desc()).first()
-        return redirect(url_for('sonuc', score=score, high_score=user.score if high_score else 0,  previous_score=user.previous_score ))
+        high_score = User.query.order_by(User.score.desc()).first()
+        return redirect(url_for('sonuc', score=score, high_score=user.score if user else 0,  
+                        previous_score=user.previous_score, global_high_score=high_score.score if high_score else 0))
+
+        
 
 
 
@@ -86,7 +91,8 @@ def sonuc ():
     score=request.args.get('score',type=int,default=0)
     high_score=request.args.get('high_score',type=int,default=0)
     previous_score = request.args.get('previous_score', type=int, default=0) 
-    return render_template("sonuc.html", score=score,high_score=high_score,previous_score=previous_score)
+    global_high_score=request.args.get('global_high_score',type=int,default=0)
+    return render_template("sonuc.html", score=score,high_score=high_score,previous_score=previous_score,global_high_score=global_high_score)
 def add_questions():
     questions = [
         {"QuestionText": "Python ile sohbet botu otomasyonu hangi kütüphane ile yapılabilir?", "optionA": "Flask", "optionB": "Discord.py", "optionC": "TensorFlow", "optionD": "NLTK", "correct_answer": "B"},
@@ -114,4 +120,3 @@ if __name__ == '__main__':
         db.create_all()
         add_questions()
     app.run(debug=True)
-    
