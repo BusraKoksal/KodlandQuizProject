@@ -57,10 +57,14 @@ def index():
 
         user = User.query.filter_by(email=email).first()
         if user:
-            previous_score = user.score  # Mevcut skoru sakla (önceki skor)
-            user.score = max(user.score, score)  # Skoru güncelle
-            user.previous_score = previous_score  # Güncellenmiş önceki skoru ata
+            # Mevcut skoru ve önceki en yüksek skoru al
+            previous_score = user.previous_score  # Önceki en yüksek skor
+            user.score = score  # Şu anki sınavın sonucu
+            # Eğer yeni skor daha yüksekse, previous_score'u güncelle
+            if score > previous_score:
+                user.previous_score = score
         else:
+            # Yeni kullanıcı kaydı
             user = User(username=username, email=email, score=score, previous_score=score)
             db.session.add(user)
 
