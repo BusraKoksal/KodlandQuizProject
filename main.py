@@ -61,7 +61,7 @@ def index():
             user.score = max(user.score, score)  # Skoru güncelle
             user.previous_score = previous_score  # Güncellenmiş önceki skoru ata
         else:
-            user = User(username=username, email=email, score=score, previous_score=0)
+            user = User(username=username, email=email, score=score, previous_score=score)
             db.session.add(user)
 
 
